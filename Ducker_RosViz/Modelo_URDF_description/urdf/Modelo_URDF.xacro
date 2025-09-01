@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<robot name="Modelo_URDF" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.03416585012159351 -0.0018685464980087363 0.0488377134584226" rpy="0 0 0"/>
+    <mass value="15.023361648425876"/>
+    <inertia ixx="0.037534" iyy="0.047706" izz="0.046926" ixy="-0.000115" iyz="-0.000363" ixz="-0.003245"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Componente1_1">
+  <inertial>
+    <origin xyz="3.469446951953614e-18 -0.00449972130395665 0.0" rpy="0 0 0"/>
+    <mass value="0.19975816887850698"/>
+    <inertia ixx="4.6e-05" iyy="9e-05" izz="4.6e-05" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.029 0.068271 -0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/Componente1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.029 0.068271 -0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/Componente1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Componente2_1">
+  <inertial>
+    <origin xyz="-1.734723475976807e-17 0.004500278696043386 0.0" rpy="0 0 0"/>
+    <mass value="0.19975816887850698"/>
+    <inertia ixx="4.6e-05" iyy="9e-05" izz="4.6e-05" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.029 -0.063729 -0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/Componente2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.029 -0.063729 -0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Modelo_URDF_description/meshes/Componente2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Revoluci�n 1" type="continuous">
+  <origin xyz="0.029 -0.068271 0.0" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Componente1_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="Revoluci�n 2" type="continuous">
+  <origin xyz="0.029 0.063729 0.0" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Componente2_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+</robot>

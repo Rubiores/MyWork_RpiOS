@@ -1,0 +1,1 @@
+ chmod +x /home/Rubiores/Ducker_RosViz/control_robot.py

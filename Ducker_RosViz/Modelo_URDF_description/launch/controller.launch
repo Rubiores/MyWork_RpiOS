@@ -1,0 +1,9 @@
+<launch>
+
+<rosparam file="$(find Modelo_URDF_description)/launch/controller.yaml" command="load"/>
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="Modelo_URDF" args="Revolución 1_position_controller Revolución 2_position_controller joint_state_controller "/>
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+  <remap from="/joint_states" to="/Modelo_URDF/joint_states"/>
+</node>
+
+</launch>

@@ -1,0 +1,118 @@
+xhost local:root
+
+docker pull arm64v8/ros:humble
+
+docker run -it \
+  --env="DISPLAY=$DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  --net=host \
+  --privileged \
+  --device=/dev/ttyUSB0 \
+  --name=ros2_humble_lidar \
+  arm64v8/ros:humble
+
+sudo docker start ros2_humble_lidar
+sudo docker ps
+sudo docker exec -it ros2_humble_lidar bash (Por cada terminal nuevo)
+
+sudo docker commit rviz2_docker ducker(ignorar)
+
+Inicializa los 3 de las 5 terminales
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+cd root
+chmod +x iniciar_slam.sh
+./iniciar_slam.sh
+
+correr lidar (inicializada)
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run rplidar_ros rplidar_node --ros-args -p serial_port:=/dev/ttyUSB0 -p serial_baudrate:=115200
+
+al mismo tiempo en otra terminal (inicializada)
+sudo docker exec -it ros2_humble_lidar bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run tf2_ros static_transform_publisher \
+  0 0 0 0 0 0 base_link laser_frame
+
+para visualizar /scan
+sudo docker exec -it ros2_humble_lidar bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 topic list
+ros2 topic echo /scan
+ctrl + c para cerrar
+
+Abrir rviz2 (inicializada solo una parte)
+export DISPLAY=:0 (inicializada)
+source /opt/ros/humble/setup.bash
+rviz2 
+
+otra terminal terminal (inicializada)
+sudo docker exec -it ros2_humble_lidar bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map base_link
+
+ultima terminal 
+sudo docker exec -it ros2_humble_lidar bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run robot_control laberinto_gpio_node
+
+cd ~/ros2_ws   
+nano ~/ros2_ws/src/robot_control/robot_control/laberinto_gpio_node.py
+
+Lanzar slam_toolbox en ultima terminal
+sudo docker exec -it ros2_humble_lidar bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run slam_toolbox async_slam_toolbox_node --ros-args \
+  -r /scan:=/scan \
+  -p odom_frame:=base_link \
+  -p base_frame:=base_link \
+  -p map_frame:=map
+
+Guardar el mapa
+ros2 run nav2_map_server map_saver_cli -f ~/mi_mapa
+
+para guardar
+docker commit rviz2_docker ducker
+
+sudo docker run -it \
+  --env="DISPLAY=$DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  --volume="$HOME/gpio_test:/gpio_test" \
+  --net=host \
+  --privileged \
+  --device=/dev/ttyUSB0 \
+  --name=rviz2_docker_gpio \
+  --device /dev/gpiomem \
+  --device /dev/gpiochip0 \
+  --device /dev/gpiochip1 \
+  --device /dev/gpiochip4 \
+  ducker
+
+sudo docker run -it \
+  --env="DISPLAY=$DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  --net=host \
+  --privileged \
+  --device=/dev/ttyUSB0 \
+  --name=rviz2_docker \
+  ducker
+
+MOTOR1_IN1 = 12  # Input 1 for Motor 1 (assuming Left Motor Forward)
+MOTOR1_IN2 = 16  # Input 2 for Motor 1 (assuming Left Motor Backward)
+MOTOR1_EN  = 23  # Enable pin for Motor 1 (Left Motor PWM)
+
+MOTOR2_IN3 = 5 # Input 1 for Motor 2 (assuming Right Motor Forward)
+MOTOR2_IN4 = 6 # Input 2 for Motor 2 (assuming Right Motor Backward)
+MOTOR2_EN  = 24 
+
+
+

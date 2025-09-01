@@ -1,0 +1,12 @@
+FROM python:3.11-bullseye
+
+# Instala sshkeyboard
+:contentReference[oaicite:7]{index=7}
+
+# A�ade el script al contenedor
+:contentReference[oaicite:8]{index=8}
+
+WORKDIR /app
+
+# Ejecuta el script
+:contentReference[oaicite:9]{index=9}
